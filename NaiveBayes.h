@@ -21,7 +21,7 @@ NEED TO FIX:
 using namespace std;
 
 //declaration:
-template<typename data> class NaiveBayes : public Data<data>
+template<typename data> class NaiveBayes : private Data<data>
 {
 public:
 	//to fit a modle: "X: featureSets", "Y: lableSets"

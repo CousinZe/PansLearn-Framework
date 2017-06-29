@@ -10,7 +10,7 @@
 #include"Data.h"
 using namespace std;
 
-template<typename data> class DecisionTree : public Data<data>
+template<typename data> class DecisionTree : private Data<data>
 {
 public:
 	//to fit a modle: "X: featureSets", "Y: lableSets"

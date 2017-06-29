@@ -13,7 +13,7 @@
 #include"NaiveBayes.h"
 using namespace std;
 
-template<typename data> class Evaluation : public Data<data>
+template<typename data> class Evaluation : private Data<data>
 {
 public:
 	//to initial this object: "n to set how many part to divide".

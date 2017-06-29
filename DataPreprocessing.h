@@ -10,7 +10,7 @@
 #include"Data.h"
 using namespace std;
 
-template<typename data> class DataPreprocessing : public Data<data>
+template<typename data> class DataPreprocessing : private Data<data>
 {
 public:
 	//initial function. (MAIN PROCESS)
