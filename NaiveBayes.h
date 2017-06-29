@@ -17,10 +17,11 @@ NEED TO FIX:
 #include"map"
 #include"set"
 #include"cmath"
+#include"Data.h"
 using namespace std;
 
 //declaration:
-template<typename data> class NaiveBayes
+template<typename data> class NaiveBayes : public Data<data>
 {
 public:
 	//to fit a modle: "X: featureSets", "Y: lableSets"
@@ -46,31 +47,12 @@ private:
 	//to get and save the probability of all attributes.(MAIN FIT PROCESS)
 	void getProbability();
 
+	//save the probability of different lable (Y probability)
+	map<data, double> lableProbabilities;
 
-
-	//save the amount of samples.
-	unsigned int dataSize;
-
-	//save the amount of propertise.
-	unsigned int propertySize;
-
-	//save the X stringSet.
-	vector<vector<data>> X;
-
-	//save the Y stringSet.
-	vector<data> Y;
-
-	//save the value types of lable.
-	set<data> lableValues;
-
-	//save the value types of all attributes.
-	vector<set<data>> attributeValues;
-
-	//save the probability of all attributes: "outside map: key=lableValue, value=attributeMap", "inside map: key=attributePair, value=probability"
+	//save the probability of all attributes(X probability): "outside map: key=lableValue, value=attributeMap", "inside map: key=attributePair, value=probability"
 	map<data, map<pair<unsigned int, data>, double>> probabilities;
 
-	//save the probability of different lable
-	map<data, double> lableProbabilities;
 };
 
 

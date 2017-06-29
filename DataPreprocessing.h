@@ -7,9 +7,10 @@
 #include"map"
 #include"set"
 #include"cmath"
+#include"Data.h"
 using namespace std;
 
-template<typename data> class DataPreprocessing
+template<typename data> class DataPreprocessing : public Data<data>
 {
 public:
 	//initial function. (MAIN PROCESS)
@@ -29,15 +30,6 @@ public:
 	void killMissingValueSample();
 
 private:
-	//save the dataset needs to fix. 
-	vector<vector<data>> X;
-
-	//save the amount of samples.
-	unsigned int dataSize;
-
-	//save the amount of propertise.
-	unsigned int propertySize;
-
 	//save the max value of dataset.
 	vector<data> maxValues;
 

@@ -7,12 +7,13 @@
 #include"map"
 #include"set"
 #include"cmath"
+#include"Data.h"
 
 //You have to inlude the h file with your modle.
 #include"NaiveBayes.h"
 using namespace std;
 
-template<typename data> class Evaluation
+template<typename data> class Evaluation : public Data<data>
 {
 public:
 	//to initial this object: "n to set how many part to divide".
