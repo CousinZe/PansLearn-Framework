@@ -1,124 +1,134 @@
-#ifndef __EVALUATION__
+﻿#ifndef __EVALUATION__
 #define __EVALUATION__
 
-#include"iostream"
-#include"string"
-#include"vector"
-#include"map"
-#include"set"
-#include"cmath"
-#include"Data.h"
+#include "iostream"
+#include "string"
+#include "vector"
+#include "map"
+#include "set"
+#include "cmath"
+#include "Data.h"
 
 //You have to inlude the h file with your modle.
-#include"NaiveBayes.h"
-using namespace std;
+#include "NaiveBayes.h"
 
-template<typename data> class Evaluation : private Data<data>
+template<typename data>
+class Evaluation
 {
 public:
-	//to initial this object: "n to set how many part to divide".
-	Evaluation(vector<vector<data>> X, vector<data> Y, unsigned int n);
+    enum class ValidationMethod
+    {
+        NaiveBayes
+    };
 
-	//use cross validation to give evaluation.
-	double crossValidation(string method);
+    //to initial this object: "n to set how many part to divide".
+    Evaluation(const std::vector<std::vector<data>>& X, const std::vector<data>& Y, unsigned int n);
+
+    //use cross validation to give evaluation.
+    double crossValidation(ValidationMethod method);
 
 private:
-	//to save the divide X.
-	vector<vector<vector<data>>> XList;
+    //to save the divide X.
+    std::vector<std::vector<std::vector<data>>> XList;
 
-	//to save the divide Y.
-	vector<vector<data>> Ylist;
+    //to save the divide Y.
+    std::vector<std::vector<data>> YList;
 
-	//to save the N.
-	unsigned int N;
+    //to save the N.
+    unsigned int N;
 
-	//to save the threholdValue.
-	unsigned int threholdValue;
+    //to save the threholdValue.
+    unsigned int threholdValue;
 
-	//crossValidationNaiveBayesFunction.
-	double crossValidationNaiveBayes();
+    //crossValidationNaiveBayesFunction.
+    double crossValidationNaiveBayes();
 
-	//evaluateMethod.(Privided for user to difine special evaluate function).
-	double evaluateMethod(vector<data> realLable, vector<data> predictedLable);
+    //evaluateMethod.(Privided for user to difine special evaluate function).
+    double evaluateMethod(std::vector<data> realLable, std::vector<data> predictedLable);
 
+    Data<data> basicData;
 };
 
 
 template<typename data>
-Evaluation<data>::Evaluation(vector<vector<data>> X, vector<data> Y, unsigned int n)
+Evaluation<data>::Evaluation(const std::vector<std::vector<data>> &X,
+                             const std::vector<data> &Y,
+                             unsigned int n)
 {
-	vector<vector<vector<data>>> resultX;
-	vector<vector<data>> resultY;
+    std::vector<std::vector<std::vector<data>>> resultX;
+    std::vector<std::vector<data>> resultY;
 
-	unsigned int dataSize = X.size();
-	unsigned int thresholdValue = X.size() / n;
+    N = n;
+    this->threholdValue = threholdValue;
 
-	Evaluation::N = n;
-	Evaluation::threholdValue = threholdValue;
+    std::vector<std::vector<data>> tempX;
+    std::vector<data> tempY;
+    for (unsigned int count = 0; count != basicData.dataSize; count++)
+    {
+        if (count % threholdValue != 0)
+        {
+            tempX.push_back(X[count]);
+            tempY.push_back(Y[count]);
+        }
+        else
+        {
+            resultX.push_back(tempX);
+            resultY.push_back(tempY);
+            tempX.clear();
+            tempY.clear();
+            tempX.push_back(X[count]);
+            tempY.push_back(Y[count]);
+        }
+    }
 
-	vector<vector<data>> tempX;
-	vector<data> tempY;
-	for (unsigned int count = 0; count != Evaluation::dataSize; count++)
-	{
-		if (count % threholdValue != 0)
-		{
-			tempX.push_back(X[count]);
-			tempY.push_back(Y[count]);
-		}
-		else
-		{
-			resultX.push_back(tempX);
-			resultY.push_back(tempY);
-			tempX.clear();
-			tempY.clear();
-			tempX.push_back(X[count]);
-			tempY.push_back(Y[count]);
-		}
-	}
+    resultX.push_back(tempX);
+    resultY.push_back(tempY);
 
-	resultX.push_back(tempX);
-	resultY.push_back(tempY);
-
-	Evaluation::XList = resultX;
-	Evaluation::Ylist = resultY;
+    XList = resultX;
+    YList = resultY;
 }
 
 template<typename data>
-double Evaluation<data>::crossValidation(string method)
+double Evaluation<data>::crossValidation(ValidationMethod method)
 {
-	if (method = "NaiveBayes")
-	{
-		return crossValidationNaiveBayes();
-	}
+    switch (method)
+    {
+    case ValidationMethod::NaiveBayes:
+        return crossValidationNaiveBayes();
+
+    default:
+        // Fixme : add some error-report here.
+        ;
+    }
 }
 
 template<typename data>
 double Evaluation<data>::crossValidationNaiveBayes()
 {
-	double result = 0;
-	for (unsigned int count = 0; count != Evaluation<data>::N; count++)
-	{
-		vector<vector<data>> test = Evaluation::XList[i];
-		vector<data> lable = Evaluation::Ylist[i];
-		vector<vector<data>> trainX;
-		vector<data> trainY;
-		for (unsigned int i = 0; i != Evaluation::N; i++)
-		{
-			if (i != count)
-			{
-				trainX.insert(trainX.end(), Evaluation::XList[i].begin(), Evaluation::XList[i].end());
-				trainY.insert(trainY.end(), Evaluation::YList[i].begin(), Evaluation::YList[i].end());
-			}
-		}
+    double result = 0;
+    for (unsigned int count = 0; count != Evaluation<data>::N; count++)
+    {
+        std::vector<std::vector<data>> test = XList[count];
+        std::vector<data> lable = YList[count];
+        std::vector<std::vector<data>> trainX;
+        std::vector<data> trainY;
+        for (unsigned int i = 0; i != N; i++)
+        {
+            if (i != count)
+            {
+                trainX.insert(trainX.end(), XList[i].begin(), XList[i].end());
+                trainY.insert(trainY.end(), YList[i].begin(), YList[i].end());
+            }
+        }
 
-		NaiveBayes<data> modle;
-		modle.fit(trainX, trainY);
-		vector<data> priList = modle.predict(test);
+        NaiveBayes<data> modle;
+        modle.fit(trainX, trainY);
+        std::vector<data> priList = modle.predict(test);
 
-		result += Evaluation::evaluateMethod(lable, priList);
-	}
+        result += Evaluation::evaluateMethod(lable, priList);
+    }
 
-	return result / Evaluation::N;
+    return result / N;
 }
 
 #endif // !__EVALUATION__

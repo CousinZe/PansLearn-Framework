@@ -10,8 +10,6 @@
 #include"Data.h"
 #include <cassert>
 
-using namespace std;
-
 template<typename data>
 class DataPreprocessing
 {
@@ -24,7 +22,7 @@ public:
     };
 
     //initial function. (MAIN PROCESS)
-    DataPreprocessing(const vector<vector<data>> &dataSet);
+    DataPreprocessing(const std::vector<std::vector<data>> &dataSet);
 
     //to do discretization for dataSet.
     void discretization(unsigned int splitPointAmount);
@@ -41,25 +39,25 @@ public:
 
 private:
     //save the max value of dataset.
-    vector<data> maxValues;
+    std::vector<data> maxValues;
 
     //save the min value of dataset.
-    vector<data> minValues;
+    std::vector<data> minValues;
 
     //save the average value of dataset.
-    vector<data> averageValues;
+    std::vector<data> averageValues;
 
     //save the median value of dataset.
-    vector<data> medianValues;
+    std::vector<data> medianValues;
 
     //save the mode value of dataset.
-    vector<data> modeValues;
+    std::vector<data> modeValues;
 
     Data<data> basicData;
 };
 
 template<typename data>
-DataPreprocessing<data>::DataPreprocessing(const vector<vector<data>> &dataSet)
+DataPreprocessing<data>::DataPreprocessing(const std::vector<std::vector<data>> &dataSet)
 {
     assert(!dataSet.empty());
 
@@ -67,13 +65,13 @@ DataPreprocessing<data>::DataPreprocessing(const vector<vector<data>> &dataSet)
     basicData.dataSize = dataSet.size();
     basicData.propertySize = dataSet[0].size();
 
-    vector<data> max(basicData.propertySize);
-    vector<data> min(basicData.propertySize);
-    vector<data> average(basicData.propertySize);
-    vector<data> mode(basicData.propertySize);
+    std::vector<data> max(basicData.propertySize);
+    std::vector<data> min(basicData.propertySize);
+    std::vector<data> average(basicData.propertySize);
+    std::vector<data> mode(basicData.propertySize);
 
     //The occurrence number of each feature.
-    vector<map<data, unsigned int>> modeMap(basicData.propertySize);
+    std::vector<std::map<data, unsigned int>> modeMap(basicData.propertySize);
 
     for (auto it = basicData.X.begin()->begin();
          it != basicData.X.begin()->end();
@@ -141,7 +139,7 @@ DataPreprocessing<data>::DataPreprocessing(const vector<vector<data>> &dataSet)
 template<typename data>
 void DataPreprocessing<data>::discretization(unsigned int splitPointAmount)
 {
-    vector<data> thresholdValues(basicData.propertySize);
+    std::vector<data> thresholdValues(basicData.propertySize);
     for (unsigned int i = 0; i != basicData.propertySize - 1; i++)
     {
         thresholdValues[i] =
@@ -171,7 +169,7 @@ void DataPreprocessing<data>::discretization(unsigned int splitPointAmount)
 template<typename data>
 void DataPreprocessing<data>::fixMissingValue(FixMethod method)
 {
-    vector<data> fixValues(basicData.propertySize);
+    std::vector<data> fixValues(basicData.propertySize);
 
     //method: average/median/mode/custom
 
@@ -232,7 +230,7 @@ void DataPreprocessing<data>::fixMissingValue(FixMethod,
 template<typename data>
 void DataPreprocessing<data>::standardize()
 {
-    vector<double> ratio(basicData.propertySize);
+    std::vector<double> ratio(basicData.propertySize);
     for (unsigned int i = 0; i != basicData.propertySize; i++)
     {
         ratio.push_back(

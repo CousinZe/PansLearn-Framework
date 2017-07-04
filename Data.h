@@ -8,8 +8,6 @@
 #include"set"
 #include"cmath"
 
-using namespace std;
-
 template<typename data>
 struct Data
 {
@@ -20,16 +18,16 @@ struct Data
     unsigned int propertySize;
 
     //save the X stringSet.
-    vector<vector<data>> X;
+    std::vector<std::vector<data>> X;
 
     //save the Y stringSet.
-    vector<data> Y;
+    std::vector<data> Y;
 
     //save the value types of lable.
-    set<data> lableValues;
+    std::set<data> lableValues;
 
     //save the value types of all attributes.
-    vector<set<data>> attributeValues;
+    std::vector<std::set<data>> attributeValues;
 };
 
 #endif //  !__DATA__
